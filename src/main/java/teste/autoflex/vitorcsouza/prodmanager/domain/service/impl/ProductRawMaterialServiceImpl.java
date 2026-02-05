@@ -3,6 +3,7 @@ package teste.autoflex.vitorcsouza.prodmanager.domain.service.impl;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import teste.autoflex.vitorcsouza.prodmanager.domain.dto.ProductRawMaterialDTOReq;
 import teste.autoflex.vitorcsouza.prodmanager.domain.dto.ProductRawMaterialDTORes;
 import teste.autoflex.vitorcsouza.prodmanager.domain.model.Product;
@@ -25,6 +26,7 @@ public class ProductRawMaterialServiceImpl implements CrudBase<ProductRawMateria
     private final ProductRawMaterialRepository productRawMaterialRepository;
 
     @Override
+    @Transactional
     public ProductRawMaterialDTORes save(ProductRawMaterialDTOReq dto) {
         Product product = productRepository.findById(dto.productId()).orElseThrow(() -> new EntityNotFoundException("Product not found"));
         RawMaterial rawMaterial = rawMaterialRepository.findById(dto.rawMaterialId()).orElseThrow(() -> new EntityNotFoundException("Raw Material not found"));
