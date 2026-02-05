@@ -1,0 +1,7 @@
+CREATE TABLE product
+(
+    id    RAW(16) DEFAULT SYS_GUID() PRIMARY KEY,
+    name  VARCHAR2(100) NOT NULL,
+    code  VARCHAR2(50) NOT NULL UNIQUE,
+    price NUMBER(10,2) NOT NULL
+);
