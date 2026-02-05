@@ -1,5 +1,7 @@
 package teste.autoflex.vitorcsouza.prodmanager.domain.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import teste.autoflex.vitorcsouza.prodmanager.domain.dto.RawMaterialDTOReq;
@@ -37,5 +39,19 @@ public class RawMaterialServiceImpl implements CrudBase<RawMaterialDTORes, RawMa
     @Override
     public void deleteById(UUID id) {
 
+    }
+
+    @Transactional
+    public RawMaterialDTORes updateStock(UUID id, int quantity) {
+        RawMaterial rawMaterial = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Raw Material not found"));
+
+        int newQuantity = rawMaterial.getStockQuantity() + quantity;
+        if (newQuantity < 0) {
+            throw new IllegalArgumentException("Insufficient stock for raw material: " + rawMaterial.getName());
+        }
+
+        rawMaterial.setStockQuantity(newQuantity);
+        return RawMaterialDTORes.fromEntity(repository.save(rawMaterial));
     }
 }
