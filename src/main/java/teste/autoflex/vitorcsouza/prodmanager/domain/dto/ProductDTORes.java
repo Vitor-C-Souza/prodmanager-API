@@ -11,8 +11,8 @@ public record ProductDTORes(
         String code,
         BigDecimal price
 ) {
-    public ProductDTORes(Product product) {
-        this(
+    public static ProductDTORes fromEntity(Product product) {
+        return new ProductDTORes(
                 product.getId(),
                 product.getName(),
                 product.getCode(),

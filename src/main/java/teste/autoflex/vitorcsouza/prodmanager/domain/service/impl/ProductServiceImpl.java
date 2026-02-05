@@ -19,9 +19,11 @@ public class ProductServiceImpl implements CrudBase<ProductDTORes, ProductDTOReq
 
     @Override
     public ProductDTORes save(ProductDTOReq dto) {
-        Product product = new Product(dto);
+        Product product = dto.toEntity();
+
         productRepository.save(product);
-        return new ProductDTORes(product);
+
+        return ProductDTORes.fromEntity(product);
     }
 
     @Override

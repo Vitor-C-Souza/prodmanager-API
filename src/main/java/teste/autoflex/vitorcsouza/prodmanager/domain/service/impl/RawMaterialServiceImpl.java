@@ -19,9 +19,9 @@ public class RawMaterialServiceImpl implements CrudBase<RawMaterialDTORes, RawMa
 
     @Override
     public RawMaterialDTORes save(RawMaterialDTOReq dto) {
-        RawMaterial rawMaterial = new RawMaterial(dto);
+        RawMaterial rawMaterial = dto.toEntity();
         repository.save(rawMaterial);
-        return new RawMaterialDTORes(rawMaterial);
+        return RawMaterialDTORes.fromEntity(rawMaterial);
     }
 
     @Override
