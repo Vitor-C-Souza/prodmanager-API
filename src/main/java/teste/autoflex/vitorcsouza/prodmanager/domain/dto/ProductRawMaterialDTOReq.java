@@ -9,10 +9,10 @@ import teste.autoflex.vitorcsouza.prodmanager.domain.model.RawMaterial;
 import java.util.UUID;
 
 public record ProductRawMaterialDTOReq(
-        @NotNull(message = "Product ID is required")
+        @NotNull(message = "Product id is required")
         UUID productId,
 
-        @NotNull(message = "Raw material ID is required")
+        @NotNull(message = "Raw material id is required")
         UUID rawMaterialId,
 
         @Positive(message = "Quantity must be greater than zero")
