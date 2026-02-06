@@ -20,6 +20,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 
     @Override
+    @Transactional
     public ProductDTORes save(ProductDTOReq dto) {
         Product product = dto.toEntity();
 
@@ -36,7 +37,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public ProductDTORes findById(UUID id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Product not found"));
 
@@ -44,6 +45,21 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
+    public ProductDTORes update(UUID id, ProductDTOReq dto) {
+        Product product = productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Product not found"));
+
+        product.setCode(dto.code());
+        product.setName(dto.name());
+        product.setPrice(dto.price());
+
+        productRepository.save(product);
+
+        return ProductDTORes.fromEntity(product);
+    }
+
+    @Override
+    @Transactional
     public void deleteById(UUID id) {
         if (productRepository.existsById(id)) {
             productRepository.deleteById(id);

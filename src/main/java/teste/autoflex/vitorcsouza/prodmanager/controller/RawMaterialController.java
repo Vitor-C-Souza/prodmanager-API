@@ -47,4 +47,10 @@ public class RawMaterialController {
         rawMaterialService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<RawMaterialDTORes> update(@PathVariable UUID id, @RequestBody @Valid RawMaterialDTOReq rawMaterialDTOReq) {
+        RawMaterialDTORes updated = rawMaterialService.update(id, rawMaterialDTOReq);
+        return ResponseEntity.ok(updated);
+    }
 }

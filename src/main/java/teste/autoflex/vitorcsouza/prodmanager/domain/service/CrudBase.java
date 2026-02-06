@@ -11,5 +11,7 @@ public interface CrudBase<DTORes, DTOReq> {
 
     DTORes findById(UUID id);
 
+    DTORes update(UUID id, DTOReq dto);
+
     void deleteById(UUID id);
 }

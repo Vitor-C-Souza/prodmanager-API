@@ -1,9 +1,9 @@
 package teste.autoflex.vitorcsouza.prodmanager.domain.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import teste.autoflex.vitorcsouza.prodmanager.domain.dto.RawMaterialDTOReq;
 import teste.autoflex.vitorcsouza.prodmanager.domain.dto.RawMaterialDTORes;
 import teste.autoflex.vitorcsouza.prodmanager.domain.model.RawMaterial;
@@ -20,6 +20,7 @@ public class RawMaterialServiceImpl implements RawMaterialService {
     private final RawMaterialRepository rawMaterialRepository;
 
     @Override
+    @Transactional
     public RawMaterialDTORes save(RawMaterialDTOReq dto) {
         RawMaterial rawMaterial = dto.toEntity();
         rawMaterialRepository.save(rawMaterial);
@@ -27,6 +28,7 @@ public class RawMaterialServiceImpl implements RawMaterialService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<RawMaterialDTORes> findAll() {
 
         List<RawMaterial> rawMaterials = rawMaterialRepository.findAll();
@@ -35,6 +37,7 @@ public class RawMaterialServiceImpl implements RawMaterialService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public RawMaterialDTORes findById(UUID id) {
         RawMaterial rawMaterial = rawMaterialRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Raw material not found"));
 
@@ -42,6 +45,19 @@ public class RawMaterialServiceImpl implements RawMaterialService {
     }
 
     @Override
+    @Transactional
+    public RawMaterialDTORes update(UUID id, RawMaterialDTOReq dto) {
+        RawMaterial rawMaterial = rawMaterialRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Raw material not found"));
+
+        rawMaterial.setCode(dto.code());
+        rawMaterial.setName(dto.name());
+        rawMaterialRepository.save(rawMaterial);
+
+        return RawMaterialDTORes.fromEntity(rawMaterial);
+    }
+
+    @Override
+    @Transactional
     public void deleteById(UUID id) {
 
         if (rawMaterialRepository.existsById(id)) {

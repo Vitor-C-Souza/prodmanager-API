@@ -47,4 +47,10 @@ public class ProductController {
         productService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductDTORes> update(@PathVariable UUID id, @RequestBody @Valid ProductDTOReq productDTOReq) {
+        ProductDTORes updated = productService.update(id, productDTOReq);
+        return ResponseEntity.ok(updated);
+    }
 }
