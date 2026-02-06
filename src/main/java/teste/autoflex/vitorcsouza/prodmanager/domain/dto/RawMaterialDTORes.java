@@ -4,7 +4,7 @@ import teste.autoflex.vitorcsouza.prodmanager.domain.model.RawMaterial;
 
 import java.util.UUID;
 
-public record RawMaterialDTORes(UUID ID, String name, String code, int stockQuantity) {
+public record RawMaterialDTORes(UUID id, String name, String code, int stockQuantity) {
     public static RawMaterialDTORes fromEntity(RawMaterial rawMaterial) {
         return new RawMaterialDTORes(
                 rawMaterial.getId(),
