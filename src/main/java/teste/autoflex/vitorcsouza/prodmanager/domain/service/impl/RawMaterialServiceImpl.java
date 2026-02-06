@@ -17,33 +17,43 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class RawMaterialServiceImpl implements RawMaterialService {
 
-    private final RawMaterialRepository repository;
+    private final RawMaterialRepository rawMaterialRepository;
 
     @Override
     public RawMaterialDTORes save(RawMaterialDTOReq dto) {
         RawMaterial rawMaterial = dto.toEntity();
-        repository.save(rawMaterial);
+        rawMaterialRepository.save(rawMaterial);
         return RawMaterialDTORes.fromEntity(rawMaterial);
     }
 
     @Override
     public List<RawMaterialDTORes> findAll() {
-        return List.of();
+
+        List<RawMaterial> rawMaterials = rawMaterialRepository.findAll();
+
+        return rawMaterials.stream().map(RawMaterialDTORes::fromEntity).toList();
     }
 
     @Override
     public RawMaterialDTORes findById(UUID id) {
-        return null;
+        RawMaterial rawMaterial = rawMaterialRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Raw material not found"));
+
+        return RawMaterialDTORes.fromEntity(rawMaterial);
     }
 
     @Override
     public void deleteById(UUID id) {
 
+        if (rawMaterialRepository.existsById(id)) {
+            rawMaterialRepository.deleteById(id);
+        } else {
+            throw new EntityNotFoundException("Raw material not found");
+        }
     }
 
     @Transactional
     public RawMaterialDTORes updateStock(UUID id, int quantity) {
-        RawMaterial rawMaterial = repository.findById(id)
+        RawMaterial rawMaterial = rawMaterialRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Raw Material not found"));
 
         int newQuantity = rawMaterial.getStockQuantity() + quantity;
@@ -52,6 +62,6 @@ public class RawMaterialServiceImpl implements RawMaterialService {
         }
 
         rawMaterial.setStockQuantity(newQuantity);
-        return RawMaterialDTORes.fromEntity(repository.save(rawMaterial));
+        return RawMaterialDTORes.fromEntity(rawMaterialRepository.save(rawMaterial));
     }
 }

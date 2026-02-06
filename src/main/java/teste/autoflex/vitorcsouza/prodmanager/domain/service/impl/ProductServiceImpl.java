@@ -1,7 +1,9 @@
 package teste.autoflex.vitorcsouza.prodmanager.domain.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import teste.autoflex.vitorcsouza.prodmanager.domain.dto.ProductDTOReq;
 import teste.autoflex.vitorcsouza.prodmanager.domain.dto.ProductDTORes;
 import teste.autoflex.vitorcsouza.prodmanager.domain.model.Product;
@@ -27,17 +29,26 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ProductDTORes> findAll() {
-        return List.of();
+        List<Product> products = productRepository.findAll();
+        return products.stream().map(ProductDTORes::fromEntity).toList();
     }
 
     @Override
+    @Transactional
     public ProductDTORes findById(UUID id) {
-        return null;
+        Product product = productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Product not found"));
+
+        return ProductDTORes.fromEntity(product);
     }
 
     @Override
     public void deleteById(UUID id) {
-
+        if (productRepository.existsById(id)) {
+            productRepository.deleteById(id);
+        } else {
+            throw new EntityNotFoundException("Product not found");
+        }
     }
 }
