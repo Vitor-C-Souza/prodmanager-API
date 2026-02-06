@@ -6,14 +6,14 @@ import teste.autoflex.vitorcsouza.prodmanager.domain.dto.ProductDTOReq;
 import teste.autoflex.vitorcsouza.prodmanager.domain.dto.ProductDTORes;
 import teste.autoflex.vitorcsouza.prodmanager.domain.model.Product;
 import teste.autoflex.vitorcsouza.prodmanager.domain.repository.ProductRepository;
-import teste.autoflex.vitorcsouza.prodmanager.domain.service.CrudBase;
+import teste.autoflex.vitorcsouza.prodmanager.domain.service.ProductService;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ProductServiceImpl implements CrudBase<ProductDTORes, ProductDTOReq> {
+public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
 

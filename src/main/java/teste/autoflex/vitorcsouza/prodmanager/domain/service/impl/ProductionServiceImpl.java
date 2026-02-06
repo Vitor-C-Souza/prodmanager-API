@@ -9,13 +9,14 @@ import teste.autoflex.vitorcsouza.prodmanager.domain.model.ProductRawMaterial;
 import teste.autoflex.vitorcsouza.prodmanager.domain.model.RawMaterial;
 import teste.autoflex.vitorcsouza.prodmanager.domain.repository.ProductRepository;
 import teste.autoflex.vitorcsouza.prodmanager.domain.repository.RawMaterialRepository;
+import teste.autoflex.vitorcsouza.prodmanager.domain.service.ProductionService;
 
 import java.math.BigDecimal;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class ProductionServiceImpl {
+public class ProductionServiceImpl implements ProductionService {
 
     private final ProductRepository productRepository;
     private final RawMaterialRepository rawMaterialRepository;

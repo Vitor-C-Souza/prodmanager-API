@@ -12,14 +12,14 @@ import teste.autoflex.vitorcsouza.prodmanager.domain.model.RawMaterial;
 import teste.autoflex.vitorcsouza.prodmanager.domain.repository.ProductRawMaterialRepository;
 import teste.autoflex.vitorcsouza.prodmanager.domain.repository.ProductRepository;
 import teste.autoflex.vitorcsouza.prodmanager.domain.repository.RawMaterialRepository;
-import teste.autoflex.vitorcsouza.prodmanager.domain.service.CrudBase;
+import teste.autoflex.vitorcsouza.prodmanager.domain.service.ProductRawMaterialService;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ProductRawMaterialServiceImpl implements CrudBase<ProductRawMaterialDTORes, ProductRawMaterialDTOReq> {
+public class ProductRawMaterialServiceImpl implements ProductRawMaterialService {
 
     private final ProductRepository productRepository;
     private final RawMaterialRepository rawMaterialRepository;

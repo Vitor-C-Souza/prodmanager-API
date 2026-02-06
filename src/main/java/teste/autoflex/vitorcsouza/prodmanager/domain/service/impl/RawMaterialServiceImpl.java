@@ -8,14 +8,14 @@ import teste.autoflex.vitorcsouza.prodmanager.domain.dto.RawMaterialDTOReq;
 import teste.autoflex.vitorcsouza.prodmanager.domain.dto.RawMaterialDTORes;
 import teste.autoflex.vitorcsouza.prodmanager.domain.model.RawMaterial;
 import teste.autoflex.vitorcsouza.prodmanager.domain.repository.RawMaterialRepository;
-import teste.autoflex.vitorcsouza.prodmanager.domain.service.CrudBase;
+import teste.autoflex.vitorcsouza.prodmanager.domain.service.RawMaterialService;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class RawMaterialServiceImpl implements CrudBase<RawMaterialDTORes, RawMaterialDTOReq> {
+public class RawMaterialServiceImpl implements RawMaterialService {
 
     private final RawMaterialRepository repository;
 
