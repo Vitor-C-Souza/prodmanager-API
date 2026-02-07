@@ -1,5 +1,6 @@
 package teste.autoflex.vitorcsouza.prodmanager.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +16,18 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/products/{productId}/materials")
+@Tag(
+        name = "Product Raw Materials",
+        description = "Endpoints for managing raw materials linked to products"
+)
 public class ProductRawMaterialController {
 
     private final ProductRawMaterialService productRawMaterialService;
 
+    @Tag(
+            name = "Product Raw Materials",
+            description = "Endpoints for managing raw materials linked to products"
+    )
     @PostMapping
     public ResponseEntity<ProductRawMaterialDTORes> create(@PathVariable UUID productId, @RequestBody @Valid ProductRawMaterialDTOReq productRawMaterialDTOReq, UriComponentsBuilder uriComponentsBuilder) {
 
