@@ -1,9 +1,9 @@
 CREATE TABLE product_raw_material
 (
     id                UUID DEFAULT RANDOM_UUID() PRIMARY KEY,
-    product_id        RAW(16) UNIQUE NOT NULL,
-    raw_material_id   RAW(16)        NOT NULL,
-    required_quantity NUMBER         NOT NULL,
+    product_id        RAW(16) NOT NULL,
+    raw_material_id   RAW(16) NOT NULL,
+    required_quantity NUMBER  NOT NULL,
 
     CONSTRAINT fk_prm_product
         FOREIGN KEY (product_id)
