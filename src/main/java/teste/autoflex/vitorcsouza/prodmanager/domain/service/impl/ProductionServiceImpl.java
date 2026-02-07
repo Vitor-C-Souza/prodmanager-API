@@ -23,7 +23,7 @@ public class ProductionServiceImpl implements ProductionService {
 
     @Transactional(readOnly = true)
     public List<ProductionResultDTO> calculateProduction() {
-        List<Product> products = productRepository.findAll();
+        List<Product> products = new ArrayList<>(productRepository.findAll());
         List<ProductionResultDTO> result = new ArrayList<>();
 
         products.sort(
