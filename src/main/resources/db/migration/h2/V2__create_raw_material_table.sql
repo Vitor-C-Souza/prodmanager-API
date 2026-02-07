@@ -1,0 +1,7 @@
+CREATE TABLE raw_material
+(
+    id             UUID DEFAULT RANDOM_UUID() PRIMARY KEY,
+    name           VARCHAR2(100) NOT NULL,
+    code           VARCHAR2(50)  NOT NULL UNIQUE,
+    stock_quantity NUMBER        NOT NULL
+);

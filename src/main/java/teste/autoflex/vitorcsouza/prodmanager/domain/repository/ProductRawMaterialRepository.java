@@ -6,4 +6,5 @@ import teste.autoflex.vitorcsouza.prodmanager.domain.model.ProductRawMaterial;
 import java.util.UUID;
 
 public interface ProductRawMaterialRepository extends JpaRepository<ProductRawMaterial, UUID> {
+    boolean existsByProductIdAndRawMaterialId(UUID productId, UUID productRawMaterialDTOReq);
 }

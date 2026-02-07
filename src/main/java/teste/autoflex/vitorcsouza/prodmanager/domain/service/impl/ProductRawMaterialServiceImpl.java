@@ -13,6 +13,7 @@ import teste.autoflex.vitorcsouza.prodmanager.domain.repository.ProductRawMateri
 import teste.autoflex.vitorcsouza.prodmanager.domain.repository.ProductRepository;
 import teste.autoflex.vitorcsouza.prodmanager.domain.repository.RawMaterialRepository;
 import teste.autoflex.vitorcsouza.prodmanager.domain.service.ProductRawMaterialService;
+import teste.autoflex.vitorcsouza.prodmanager.infra.exceptions.BusinessException;
 
 import java.util.UUID;
 
@@ -27,13 +28,21 @@ public class ProductRawMaterialServiceImpl implements ProductRawMaterialService 
     @Override
     @Transactional
     public ProductRawMaterialDTORes link(UUID productId, ProductRawMaterialDTOReq productRawMaterialDTOReq) {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("Product not found"));
-        RawMaterial rawMaterial = rawMaterialRepository.findById(productRawMaterialDTOReq.rawMaterialId()).orElseThrow(() -> new EntityNotFoundException("Raw Material not found"));
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
 
-        ProductRawMaterial productRawMaterial = productRawMaterialDTOReq.toEntity(product, rawMaterial);
+        RawMaterial rawMaterial = rawMaterialRepository.findById(productRawMaterialDTOReq.rawMaterialId())
+                .orElseThrow(() -> new EntityNotFoundException("Raw Material not found"));
 
-        productRawMaterialRepository.save(productRawMaterial);
+        if (productRawMaterialRepository
+                .existsByProductIdAndRawMaterialId(productId, productRawMaterialDTOReq.rawMaterialId())) {
+            throw new BusinessException("Raw material already linked to product");
+        }
 
-        return ProductRawMaterialDTORes.fromEntity(productRawMaterial);
+        ProductRawMaterial entity = productRawMaterialDTOReq.toEntity(product, rawMaterial);
+
+        productRawMaterialRepository.save(entity);
+
+        return ProductRawMaterialDTORes.fromEntity(entity);
     }
 }

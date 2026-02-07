@@ -11,6 +11,7 @@ import teste.autoflex.vitorcsouza.prodmanager.domain.service.RawMaterialService;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -52,5 +53,12 @@ public class RawMaterialController {
     public ResponseEntity<RawMaterialDTORes> update(@PathVariable UUID id, @RequestBody @Valid RawMaterialDTOReq rawMaterialDTOReq) {
         RawMaterialDTORes updated = rawMaterialService.update(id, rawMaterialDTOReq);
         return ResponseEntity.ok(updated);
+    }
+
+    @PutMapping("/{id}/stock")
+    public ResponseEntity<RawMaterialDTORes> updateStock(@PathVariable UUID id, @RequestBody Map<String, Integer> value) {
+        Integer quantity = value.get("quantity");
+        RawMaterialDTORes updatedStock = rawMaterialService.updateStock(id, quantity);
+        return ResponseEntity.ok(updatedStock);
     }
 }

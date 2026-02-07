@@ -30,6 +30,11 @@ public class Exceptions {
         return buildResponse(message, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<ResponseError> handleBusiness(BusinessException ex) {
+        String message = ex.getMessage();
+        return buildResponse(message, HttpStatus.CONFLICT);
+    }
 
     private ResponseEntity<ResponseError> buildResponse(String message, HttpStatus status) {
         return ResponseEntity.status(status)

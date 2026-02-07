@@ -67,6 +67,7 @@ public class RawMaterialServiceImpl implements RawMaterialService {
         }
     }
 
+    @Override
     @Transactional
     public RawMaterialDTORes updateStock(UUID id, int quantity) {
         RawMaterial rawMaterial = rawMaterialRepository.findById(id)
