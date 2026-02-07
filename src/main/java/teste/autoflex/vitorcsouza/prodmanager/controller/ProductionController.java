@@ -1,9 +1,11 @@
 package teste.autoflex.vitorcsouza.prodmanager.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/production")
 @Tag(name = "Production", description = "Production simulation and reporting")
+@SecurityRequirement(name = "bearerAuth")
 public class ProductionController {
 
     private final ProductionService productionService;
@@ -25,6 +28,7 @@ public class ProductionController {
     @Operation(summary = "Simulate production",
             description = "Calculates the maximum production based on available raw materials")
     @GetMapping("/simulate")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<ProductionResultDTO>> simulate() {
         List<ProductionResultDTO> calculated = productionService.calculateProduction();
 
@@ -34,6 +38,7 @@ public class ProductionController {
     @Operation(summary = "Simulate production",
             description = "Calculates the maximum production based on available raw materials")
     @GetMapping("/report")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProductionReportDTO> report() {
         List<ProductionResultDTO> items = productionService.calculateProduction();
 

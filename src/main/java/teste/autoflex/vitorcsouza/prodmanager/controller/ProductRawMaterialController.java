@@ -1,9 +1,11 @@
 package teste.autoflex.vitorcsouza.prodmanager.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import teste.autoflex.vitorcsouza.prodmanager.domain.dto.ProductRawMaterialDTOReq;
@@ -16,6 +18,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/products/{productId}/materials")
+@SecurityRequirement(name = "bearerAuth")
 @Tag(
         name = "Product Raw Materials",
         description = "Endpoints for managing raw materials linked to products"
@@ -29,6 +32,7 @@ public class ProductRawMaterialController {
             description = "Endpoints for managing raw materials linked to products"
     )
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProductRawMaterialDTORes> create(@PathVariable UUID productId, @RequestBody @Valid ProductRawMaterialDTOReq productRawMaterialDTOReq, UriComponentsBuilder uriComponentsBuilder) {
 
         ProductRawMaterialDTORes saved = productRawMaterialService.link(productId, productRawMaterialDTOReq);

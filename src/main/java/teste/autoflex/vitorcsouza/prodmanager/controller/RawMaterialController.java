@@ -1,10 +1,12 @@
 package teste.autoflex.vitorcsouza.prodmanager.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import teste.autoflex.vitorcsouza.prodmanager.domain.dto.RawMaterialDTOReq;
@@ -23,6 +25,7 @@ import java.util.UUID;
         name = "Raw Materials",
         description = "Endpoints for managing raw materials and stock"
 )
+@SecurityRequirement(name = "bearerAuth")
 public class RawMaterialController {
 
     private final RawMaterialService rawMaterialService;
@@ -32,6 +35,7 @@ public class RawMaterialController {
             description = "Registers a new raw material in the system"
     )
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RawMaterialDTORes> create(@RequestBody @Valid RawMaterialDTOReq rawMaterialDTOReq, UriComponentsBuilder uriComponentsBuilder) {
 
         RawMaterialDTORes saved = rawMaterialService.save(rawMaterialDTOReq);

@@ -1,10 +1,12 @@
 package teste.autoflex.vitorcsouza.prodmanager.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import teste.autoflex.vitorcsouza.prodmanager.domain.dto.ProductDTOReq;
@@ -18,6 +20,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/products")
+@SecurityRequirement(name = "bearerAuth")
 @Tag(
         name = "Products",
         description = "Endpoints for managing products"
@@ -31,6 +34,7 @@ public class ProductController {
             description = "Registers a new product in the system"
     )
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProductDTORes> create(@RequestBody @Valid ProductDTOReq productDTOReq, UriComponentsBuilder uriComponentsBuilder) {
 
         ProductDTORes saved = productService.save(productDTOReq);
@@ -65,6 +69,7 @@ public class ProductController {
             description = "Removes a product from the system"
     )
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteById(@PathVariable UUID id) {
         productService.deleteById(id);
         return ResponseEntity.noContent().build();
@@ -75,6 +80,7 @@ public class ProductController {
             description = "Updates the data of an existing product"
     )
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProductDTORes> update(@PathVariable UUID id, @RequestBody @Valid ProductDTOReq productDTOReq) {
         ProductDTORes updated = productService.update(id, productDTOReq);
         return ResponseEntity.ok(updated);
