@@ -1,5 +1,6 @@
 package teste.autoflex.vitorcsouza.prodmanager.infra.exceptions;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +43,7 @@ public class Exceptions {
         return buildResponse(message, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
+    @Schema(description = "Standard error response")
     private ResponseEntity<ResponseError> buildResponse(String message, HttpStatus status) {
         return ResponseEntity.status(status)
                 .body(new ResponseError(message, status, LocalDateTime.now()));

@@ -1,14 +1,21 @@
 package teste.autoflex.vitorcsouza.prodmanager.domain.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import teste.autoflex.vitorcsouza.prodmanager.domain.model.Product;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
+@Schema(description = "Response object representing a product in the system")
 public record ProductDTORes(
+        @Schema(description = "Unique identifier of the product",
+                example = "550e8400-e29b-41d4-a716-446655440000", accessMode = Schema.AccessMode.READ_ONLY)
         UUID id,
+        @Schema(description = "Name of the product", example = "Mechanical Keyboard G-Pro")
         String name,
+        @Schema(description = "Unique product code", example = "KB-990-MK")
         String code,
+        @Schema(description = "Unit price of the product", example = "599.90")
         BigDecimal price
 ) {
     public static ProductDTORes fromEntity(Product product) {
