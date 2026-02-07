@@ -36,6 +36,12 @@ public class Exceptions {
         return buildResponse(message, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ResponseError> handleBusiness(IllegalArgumentException ex) {
+        String message = ex.getMessage();
+        return buildResponse(message, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
     private ResponseEntity<ResponseError> buildResponse(String message, HttpStatus status) {
         return ResponseEntity.status(status)
                 .body(new ResponseError(message, status, LocalDateTime.now()));
