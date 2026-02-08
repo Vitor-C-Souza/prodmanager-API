@@ -67,15 +67,19 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("User not found with id: " + userId));
 
-        if (req.username() != null && !req.username().isBlank()) {
+        if (req.username() != null) {
             user.setUsername(req.username());
         }
-        if (req.email() != null && !req.email().isBlank()) {
+
+        if (req.email() != null) {
             user.setEmail(req.email());
         }
-        if (req.password() != null && !req.password().isBlank()) {
+
+        if (req.password() != null) {
             user.setPassword(passwordEncoder.encode(req.password()));
         }
+
+        userRepository.save(user);
 
         return UpdateAuthRes.fromEntity(user);
     }

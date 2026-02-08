@@ -23,7 +23,7 @@ public record UserDTORes(
     public static UserDTORes fromEntity(User user) {
         return new UserDTORes(
                 user.getId() != null ? user.getId() : null,
-                user.getUsername(),
+                user.getDisplayUsername(),
                 user.getPassword(),
                 user.getEmail()
         );

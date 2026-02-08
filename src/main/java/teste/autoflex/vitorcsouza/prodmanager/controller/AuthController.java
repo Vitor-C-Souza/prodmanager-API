@@ -43,7 +43,9 @@ public class AuthController {
             @PathVariable UUID id,
             @RequestBody @Valid UpdateAuthReq req
     ) {
-        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User loggedUser = (User) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
 
         if (!loggedUser.getId().equals(id) && loggedUser.getRole() != Role.ADMIN) {
             return ResponseEntity.status(403).build();

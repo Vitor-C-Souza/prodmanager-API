@@ -22,7 +22,7 @@ public record UpdateAuthRes(
     public static UpdateAuthRes fromEntity(User user) {
         return new UpdateAuthRes(
                 user.getId(),
-                user.getUsername(),
+                user.getDisplayUsername(),
                 user.getPassword(),
                 user.getEmail()
         );
