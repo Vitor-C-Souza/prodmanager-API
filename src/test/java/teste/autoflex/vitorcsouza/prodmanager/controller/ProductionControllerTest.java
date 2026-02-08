@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import teste.autoflex.vitorcsouza.prodmanager.domain.model.Product;
@@ -65,6 +66,7 @@ class ProductionControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldSimulateProduction() throws Exception {
         mockMvc.perform(get("/api/v1/production/simulate"))
                 .andExpect(status().isOk())
@@ -74,6 +76,7 @@ class ProductionControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldReturnProductionReport() throws Exception {
         mockMvc.perform(get("/api/v1/production/report"))
                 .andExpect(status().isOk())
@@ -83,6 +86,7 @@ class ProductionControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldReturnEmptySimulationWhenNoData() throws Exception {
         productRawMaterialRepository.deleteAll();
         productRepository.deleteAll();

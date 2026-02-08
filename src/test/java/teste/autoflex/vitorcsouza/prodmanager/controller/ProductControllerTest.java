@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import teste.autoflex.vitorcsouza.prodmanager.domain.model.Product;
@@ -34,6 +35,7 @@ class ProductControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldCreateProduct() throws Exception {
         String body = """
                     {                
@@ -47,6 +49,7 @@ class ProductControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldReturnBadRequestWhenInvalidBody() throws Exception {
         String body = """
                     {
@@ -59,6 +62,7 @@ class ProductControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldFindAllProducts() throws Exception {
         productRepository.save(Product.builder().name("Desk").price(BigDecimal.valueOf(300)).build());
         productRepository.save(Product.builder().name("Desk").price(BigDecimal.valueOf(300)).build());
@@ -67,6 +71,7 @@ class ProductControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldFindProductById() throws Exception {
         Product product = productRepository.save(Product.builder().name("Monitor").price(BigDecimal.valueOf(900)).build());
 
@@ -74,11 +79,13 @@ class ProductControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldReturn404WhenProductNotFound() throws Exception {
         mockMvc.perform(get("/api/v1/products/" + UUID.randomUUID())).andExpect(status().isNotFound());
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldUpdateProduct() throws Exception {
         Product product = productRepository.save(Product.builder().name("Mouse").price(BigDecimal.valueOf(50)).build());
 
@@ -94,6 +101,7 @@ class ProductControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldReturn404WhenUpdatingNonExistingProduct() throws Exception {
         String body = """
                     {
@@ -107,6 +115,7 @@ class ProductControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldDeleteProduct() throws Exception {
         Product product = productRepository.save(Product.builder().name("Keyboard").price(BigDecimal.valueOf(80)).build());
 
@@ -116,6 +125,7 @@ class ProductControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldReturn404WhenDeletingNonExistingProduct() throws Exception {
         mockMvc.perform(delete("/api/v1/products/" + UUID.randomUUID())).andExpect(status().isNotFound());
     }

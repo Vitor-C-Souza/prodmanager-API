@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import teste.autoflex.vitorcsouza.prodmanager.domain.dto.ProductRawMaterialDTOReq;
@@ -69,6 +70,7 @@ class ProductRawMaterialControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldCreateLinkSuccessfully() throws Exception {
         ProductRawMaterialDTOReq req =
                 new ProductRawMaterialDTOReq(rawMaterialId, 10);
@@ -85,6 +87,7 @@ class ProductRawMaterialControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldReturn404WhenProductNotFound() throws Exception {
         ProductRawMaterialDTOReq req =
                 new ProductRawMaterialDTOReq(rawMaterialId, 10);
@@ -96,6 +99,7 @@ class ProductRawMaterialControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldReturn400WhenBodyInvalid() throws Exception {
         ProductRawMaterialDTOReq req =
                 new ProductRawMaterialDTOReq(null, -5);
@@ -107,6 +111,7 @@ class ProductRawMaterialControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldNotAllowDuplicatedLink() throws Exception {
         ProductRawMaterialDTOReq req =
                 new ProductRawMaterialDTOReq(rawMaterialId, 10);

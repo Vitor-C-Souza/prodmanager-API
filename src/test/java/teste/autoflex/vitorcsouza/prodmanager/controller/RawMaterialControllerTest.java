@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import teste.autoflex.vitorcsouza.prodmanager.domain.model.RawMaterial;
@@ -48,6 +49,7 @@ class RawMaterialControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldCreateRawMaterial() throws Exception {
         var request = Map.of(
                 "name", "Plastic",
@@ -64,6 +66,7 @@ class RawMaterialControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldFindAllRawMaterials() throws Exception {
         mockMvc.perform(get("/api/v1/raw-materials"))
                 .andExpect(status().isOk())
@@ -71,6 +74,7 @@ class RawMaterialControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldFindRawMaterialById() throws Exception {
         mockMvc.perform(get("/api/v1/raw-materials/{id}", rawMaterialId))
                 .andExpect(status().isOk())
@@ -79,6 +83,7 @@ class RawMaterialControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldUpdateRawMaterial() throws Exception {
         var request = Map.of(
                 "name", "Steel Updated",
@@ -95,6 +100,7 @@ class RawMaterialControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldUpdateStockOnly() throws Exception {
         var request = Map.of(
                 "quantity", 30
@@ -108,6 +114,7 @@ class RawMaterialControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldDeleteRawMaterial() throws Exception {
         mockMvc.perform(delete("/api/v1/raw-materials/{id}", rawMaterialId))
                 .andExpect(status().isNoContent());
