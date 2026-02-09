@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,7 +31,7 @@ public class Product {
     private BigDecimal price;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<ProductRawMaterial> materials;
+    private List<ProductRawMaterial> materials = new ArrayList<>();
 
     @CreationTimestamp
     @Column(updatable = false)

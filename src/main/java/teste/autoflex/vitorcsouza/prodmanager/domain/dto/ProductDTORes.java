@@ -29,7 +29,8 @@ public record ProductDTORes(
                 product.getName(),
                 product.getCode(),
                 product.getPrice(),
-                product.getMaterials().stream().map(ProductRawMaterialDTORes::new).toList()
+                product.getMaterials() == null ? List.of() :
+                        product.getMaterials().stream().map(ProductRawMaterialDTORes::new).toList()
         );
     }
 }
