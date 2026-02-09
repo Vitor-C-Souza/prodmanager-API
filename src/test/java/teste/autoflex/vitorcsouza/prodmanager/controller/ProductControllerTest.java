@@ -8,10 +8,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 import teste.autoflex.vitorcsouza.prodmanager.domain.model.Product;
+import teste.autoflex.vitorcsouza.prodmanager.domain.model.ProductRawMaterial;
+import teste.autoflex.vitorcsouza.prodmanager.domain.model.RawMaterial;
 import teste.autoflex.vitorcsouza.prodmanager.domain.repository.ProductRepository;
+import teste.autoflex.vitorcsouza.prodmanager.domain.repository.RawMaterialRepository;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -28,6 +33,9 @@ class ProductControllerTest {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private RawMaterialRepository rawMaterialRepository;
 
     @BeforeEach
     void setup() {
@@ -128,5 +136,45 @@ class ProductControllerTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldReturn404WhenDeletingNonExistingProduct() throws Exception {
         mockMvc.perform(delete("/api/v1/products/" + UUID.randomUUID())).andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    void shouldDissociateMaterialWithoutDeletingIt() throws Exception {
+        RawMaterial material = rawMaterialRepository.save(
+                RawMaterial.builder()
+                        .name("Steel")
+                        .code("ST-01")
+                        .stockQuantity(100)
+                        .build()
+        );
+
+        Product product = Product.builder()
+                .name("Robot")
+                .code("RB-01")
+                .price(new BigDecimal("500"))
+                .materials(new ArrayList<>())
+                .build();
+
+        ProductRawMaterial relationship = new ProductRawMaterial();
+        relationship.setProduct(product);
+        relationship.setRawMaterial(material);
+        relationship.setRequiredQuantity(5);
+
+        product.getMaterials().add(relationship);
+
+        product = productRepository.saveAndFlush(product);
+
+        UUID productId = product.getId();
+        UUID relationshipId = product.getMaterials().get(0).getId();
+
+        mockMvc.perform(delete("/api/v1/products/" + productId + "/materials/" + relationshipId))
+                .andExpect(status().isNoContent());
+
+        Product updatedProduct = productRepository.findById(productId).orElseThrow();
+        assertTrue(updatedProduct.getMaterials().isEmpty(), "Relationship should be gone from Product");
+
+        assertTrue(rawMaterialRepository.existsById(material.getId()), "RawMaterial must still exist");
     }
 }

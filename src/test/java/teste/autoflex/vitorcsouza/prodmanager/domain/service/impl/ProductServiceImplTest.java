@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import teste.autoflex.vitorcsouza.prodmanager.domain.dto.ProductDTOReq;
 import teste.autoflex.vitorcsouza.prodmanager.domain.dto.ProductDTORes;
 import teste.autoflex.vitorcsouza.prodmanager.domain.model.Product;
+import teste.autoflex.vitorcsouza.prodmanager.domain.model.ProductRawMaterial;
 import teste.autoflex.vitorcsouza.prodmanager.domain.repository.ProductRepository;
 
 import java.math.BigDecimal;
@@ -16,11 +17,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceImplTest {
@@ -178,5 +177,44 @@ class ProductServiceImplTest {
         // Assert
         assertThrows(EntityNotFoundException.class,
                 () -> service.deleteById(id));
+    }
+
+    void removeMaterialSuccess() {
+        // Arrange
+        UUID productId = UUID.randomUUID();
+        UUID relId = UUID.randomUUID();
+
+        Product product = new Product();
+        product.setId(productId);
+
+        ProductRawMaterial relation = new ProductRawMaterial();
+        relation.setId(relId);
+        relation.setProduct(product);
+
+        product.getMaterials().add(relation);
+
+        when(productRepository.findById(productId)).thenReturn(Optional.of(product));
+
+        // Act
+        service.removeMaterial(productId, relId);
+
+        // Assert
+        assertTrue(product.getMaterials().isEmpty(), "Relationship should be removed from list");
+        verify(productRepository, times(1)).save(product);
+    }
+
+    @Test
+    void removeMaterialNotFound() {
+        // Arrange
+        UUID productId = UUID.randomUUID();
+        Product product = new Product();
+        product.setId(productId);
+
+        when(productRepository.findById(productId)).thenReturn(Optional.of(product));
+
+        // Act & Assert
+        assertThrows(EntityNotFoundException.class, () ->
+                service.removeMaterial(productId, UUID.randomUUID())
+        );
     }
 }

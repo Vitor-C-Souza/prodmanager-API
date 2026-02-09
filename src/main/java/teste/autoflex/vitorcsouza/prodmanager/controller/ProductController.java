@@ -85,4 +85,12 @@ public class ProductController {
         ProductDTORes updated = productService.update(id, productDTOReq);
         return ResponseEntity.ok(updated);
     }
+
+    @DeleteMapping("/{productId}/materials/{relationshipId}")
+    public ResponseEntity<Void> removeMaterialFromProduct(
+            @PathVariable UUID productId,
+            @PathVariable UUID relationshipId) {
+        productService.removeMaterial(productId, relationshipId);
+        return ResponseEntity.noContent().build();
+    }
 }
