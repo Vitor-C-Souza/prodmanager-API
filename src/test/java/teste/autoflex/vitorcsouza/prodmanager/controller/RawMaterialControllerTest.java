@@ -106,7 +106,7 @@ class RawMaterialControllerTest {
                 "quantity", 30
         );
 
-        mockMvc.perform(put("/api/v1/raw-materials/{id}/stock", rawMaterialId)
+        mockMvc.perform(patch("/api/v1/raw-materials/{id}/stock", rawMaterialId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
