@@ -86,6 +86,10 @@ public class ProductController {
         return ResponseEntity.ok(updated);
     }
 
+    @Operation(
+            summary = "Remove raw material",
+            description = "Remove raw material linked with a product"
+    )
     @DeleteMapping("/{productId}/materials/{relationshipId}")
     public ResponseEntity<Void> removeMaterialFromProduct(
             @PathVariable UUID productId,
