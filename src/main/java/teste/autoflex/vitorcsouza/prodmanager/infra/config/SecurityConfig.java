@@ -91,7 +91,7 @@ public class SecurityConfig {
         config.setAllowCredentials(true);
 
         config.setAllowedOrigins(List.of(
-                "http://localhost:*"
+                "http://localhost:5173"
         ));
 
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
