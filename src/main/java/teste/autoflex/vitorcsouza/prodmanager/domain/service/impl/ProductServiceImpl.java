@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import teste.autoflex.vitorcsouza.prodmanager.domain.dto.ProductDTOReq;
 import teste.autoflex.vitorcsouza.prodmanager.domain.dto.ProductDTORes;
 import teste.autoflex.vitorcsouza.prodmanager.domain.model.Product;
-import teste.autoflex.vitorcsouza.prodmanager.domain.model.ProductRawMaterial;
+import teste.autoflex.vitorcsouza.prodmanager.domain.repository.ProductRawMaterialRepository;
 import teste.autoflex.vitorcsouza.prodmanager.domain.repository.ProductRepository;
 import teste.autoflex.vitorcsouza.prodmanager.domain.service.ProductService;
 
@@ -19,6 +19,8 @@ import java.util.UUID;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+
+    private final ProductRawMaterialRepository productRawMaterialRepository;
 
     @Override
     @Transactional
@@ -71,17 +73,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void removeMaterial(UUID productId, UUID relationshipId) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+    public void removeMaterial(UUID productId, UUID rawMaterialId) {
+        if (!productRawMaterialRepository.existsByProductIdAndRawMaterialId(productId, rawMaterialId)) {
+            throw new EntityNotFoundException("Product Raw Material not found");
+        }
 
-        ProductRawMaterial relation = product.getMaterials().stream()
-                .filter(m -> m.getId().equals(relationshipId))
-                .findFirst()
-                .orElseThrow(() -> new EntityNotFoundException("Relationship not found for this product"));
-
-        product.getMaterials().remove(relation);
-
-        productRepository.save(product);
+        productRawMaterialRepository.deleteByProductIdAndRawMaterialId(productId, rawMaterialId);
     }
 }

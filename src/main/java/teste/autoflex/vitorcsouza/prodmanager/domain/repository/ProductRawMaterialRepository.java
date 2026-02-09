@@ -7,4 +7,6 @@ import java.util.UUID;
 
 public interface ProductRawMaterialRepository extends JpaRepository<ProductRawMaterial, UUID> {
     boolean existsByProductIdAndRawMaterialId(UUID productId, UUID productRawMaterialDTOReq);
+
+    void deleteByProductIdAndRawMaterialId(UUID productId, UUID rawMaterialId);
 }

@@ -6,5 +6,5 @@ import teste.autoflex.vitorcsouza.prodmanager.domain.dto.ProductDTORes;
 import java.util.UUID;
 
 public interface ProductService extends CrudBase<ProductDTORes, ProductDTOReq> {
-    void removeMaterial(UUID productId, UUID relationshipId);
+    void removeMaterial(UUID productId, UUID rawMaterialId);
 }
