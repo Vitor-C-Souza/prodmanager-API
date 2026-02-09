@@ -10,18 +10,27 @@ public record ProductRawMaterialDTORes(
         @Schema(description = "Unique identifier of the association",
                 example = "550e8400-e29b-41d4-a716-446655440000", accessMode = Schema.AccessMode.READ_ONLY)
         UUID id,
-        @Schema(description = "Name of the product", example = "Mechanical Keyboard G-Pro")
-        String productName,
+        @Schema(description = "The product", example = "Mechanical Keyboard G-Pro")
+        ProductDTORes product,
         @Schema(description = "Name of the raw material assigned to this product", example = "ABS Plastic")
-        String rawMaterialName,
+        RawMaterialDTORes rawMaterial,
         @Schema(description = "Quantity of this specific material needed to produce one unit of the product", example = "1")
         int requiredQuantity
 ) {
+    public ProductRawMaterialDTORes(ProductRawMaterial entity) {
+        this(
+                entity.getId(),
+                ProductDTORes.fromEntity(entity.getProduct()),
+                RawMaterialDTORes.fromEntity(entity.getRawMaterial()),
+                entity.getRequiredQuantity()
+        );
+    }
+
     public static ProductRawMaterialDTORes fromEntity(ProductRawMaterial entity) {
         return new ProductRawMaterialDTORes(
                 entity.getId(),
-                entity.getProduct().getName(),
-                entity.getRawMaterial().getName(),
+                ProductDTORes.fromEntity(entity.getProduct()),
+                RawMaterialDTORes.fromEntity(entity.getRawMaterial()),
                 entity.getRequiredQuantity()
         );
     }

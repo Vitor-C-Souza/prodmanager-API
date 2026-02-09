@@ -55,7 +55,7 @@ class ProductRawMaterialServiceImplTest {
         ProductRawMaterialDTORes res = service.link(productId, req);
 
         // Assert
-        assertEquals("Product X", res.productName());
+        assertEquals("Product X", res.product());
         assertEquals("Steel", res.rawMaterialName());
         assertEquals(5, res.requiredQuantity());
     }
