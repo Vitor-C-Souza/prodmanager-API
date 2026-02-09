@@ -19,6 +19,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -42,21 +43,19 @@ class ProductRawMaterialServiceImplTest {
         UUID rawMaterialId = UUID.randomUUID();
 
         Product product = Product.builder().id(productId).name("Product X").build();
-
         RawMaterial rawMaterial = RawMaterial.builder().id(rawMaterialId).name("Steel").build();
 
         ProductRawMaterialDTOReq req = new ProductRawMaterialDTOReq(rawMaterialId, 5);
 
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
-
         when(rawMaterialRepository.findById(rawMaterialId)).thenReturn(Optional.of(rawMaterial));
 
         // Act
         ProductRawMaterialDTORes res = service.link(productId, req);
 
         // Assert
-        assertEquals("Product X", res.product());
-        assertEquals("Steel", res.rawMaterialName());
+        assertEquals("Product X", res.product().name());
+        assertEquals("Steel", res.rawMaterial().name());
         assertEquals(5, res.requiredQuantity());
     }
 
@@ -64,14 +63,11 @@ class ProductRawMaterialServiceImplTest {
     void shouldThrowWhenProductNotFound() {
         // Arrange
         UUID productId = UUID.randomUUID();
-
         when(productRepository.findById(productId)).thenReturn(Optional.empty());
-
         ProductRawMaterialDTOReq req = new ProductRawMaterialDTOReq(UUID.randomUUID(), 5);
 
         // Act + Assert
         assertThrows(EntityNotFoundException.class, () -> service.link(productId, req));
-
         verify(productRawMaterialRepository, never()).save(any());
     }
 
@@ -90,8 +86,6 @@ class ProductRawMaterialServiceImplTest {
 
         // Act + Assert
         assertThrows(EntityNotFoundException.class, () -> service.link(productId, req));
-
         verify(productRawMaterialRepository, never()).save(any());
     }
-
 }
