@@ -3,6 +3,7 @@ package teste.autoflex.vitorcsouza.prodmanager.domain.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import teste.autoflex.vitorcsouza.prodmanager.domain.dto.ProductDTORes;
 import teste.autoflex.vitorcsouza.prodmanager.domain.dto.ProductionResultDTO;
 import teste.autoflex.vitorcsouza.prodmanager.domain.model.Product;
 import teste.autoflex.vitorcsouza.prodmanager.domain.model.ProductRawMaterial;
@@ -62,7 +63,7 @@ public class ProductionServiceImpl implements ProductionService {
 
 
             result.add(new ProductionResultDTO(
-                    product.getName(),
+                    ProductDTORes.fromEntity(product),
                     maxProduction,
                     product.getPrice(),
                     product.getPrice().multiply(BigDecimal.valueOf(maxProduction))
