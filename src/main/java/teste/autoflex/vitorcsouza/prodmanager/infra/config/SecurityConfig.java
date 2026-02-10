@@ -53,20 +53,20 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .exceptionHandling(ex ->
-                        ex.authenticationEntryPoint(entryPoint)
+                .exceptionHandling(ex
+                        -> ex.authenticationEntryPoint(entryPoint)
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers(
-                                "/api/v1/auth/**",
-                                "/v3/api-docs/**",
-                                "/swagger-ui.html",
-                                "/swagger-ui/**"
-                        )
-                        .permitAll()
-                        .anyRequest().authenticated()
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers(
+                        "/api/v1/auth/**",
+                        "/v3/api-docs/**",
+                        "/swagger-ui.html",
+                        "/swagger-ui/**"
+                )
+                .permitAll()
+                .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -91,7 +91,8 @@ public class SecurityConfig {
         config.setAllowCredentials(true);
 
         config.setAllowedOrigins(List.of(
-                "http://localhost:5173"
+                "http://localhost:5173",
+                "http://localhost"
         ));
 
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
