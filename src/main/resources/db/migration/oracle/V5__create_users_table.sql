@@ -1,8 +1,10 @@
 CREATE TABLE users
 (
-    id       RAW(16) DEFAULT SYS_GUID() PRIMARY KEY,
-    username VARCHAR2(100) NOT NULL UNIQUE,
-    password VARCHAR2(255) NOT NULL,
-    email    VARCHAR2(150) NOT NULL UNIQUE,
-    role     VARCHAR2(50)  NOT NULL
+    id         RAW(16) DEFAULT SYS_GUID() PRIMARY KEY,
+    username   VARCHAR2(100) NOT NULL UNIQUE,
+    password   VARCHAR2(255) NOT NULL,
+    email      VARCHAR2(150) NOT NULL UNIQUE,
+    role       VARCHAR2(50)  NOT NULL,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
 );
