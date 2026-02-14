@@ -2,6 +2,8 @@ package teste.autoflex.vitorcsouza.prodmanager.domain.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import teste.autoflex.vitorcsouza.prodmanager.domain.dto.ProductDTOReq;
@@ -24,6 +26,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"productionCalculation", "productsList"}, allEntries = true)
     public ProductDTORes save(ProductDTOReq dto) {
         Product product = dto.toEntity();
 
@@ -34,6 +37,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "productsList")
     public List<ProductDTORes> findAll() {
         List<Product> products = productRepository.findAll();
         return products.stream().map(ProductDTORes::fromEntity).toList();
@@ -49,6 +53,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"productionCalculation", "productsList"}, allEntries = true)
     public ProductDTORes update(UUID id, ProductDTOReq dto) {
         Product product = productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Product not found"));
 
@@ -63,6 +68,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"productionCalculation", "productsList"}, allEntries = true)
     public void deleteById(UUID id) {
         if (productRepository.existsById(id)) {
             productRepository.deleteById(id);
@@ -73,6 +79,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"productionCalculation", "productsList"}, allEntries = true)
     public void removeMaterial(UUID productId, UUID rawMaterialId) {
         if (!productRawMaterialRepository.existsByProductIdAndRawMaterialId(productId, rawMaterialId)) {
             throw new EntityNotFoundException("Product Raw Material not found");

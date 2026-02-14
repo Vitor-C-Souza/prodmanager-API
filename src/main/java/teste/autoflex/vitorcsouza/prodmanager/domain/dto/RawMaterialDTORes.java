@@ -3,6 +3,7 @@ package teste.autoflex.vitorcsouza.prodmanager.domain.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import teste.autoflex.vitorcsouza.prodmanager.domain.model.RawMaterial;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @Schema(description = "Response object representing a raw material in the system")
@@ -16,7 +17,8 @@ public record RawMaterialDTORes(
         String code,
         @Schema(description = "Current quantity available in stock", example = "250")
         int stockQuantity
-) {
+) implements Serializable {
+    private static final long serialVersionUID = 1L;
     public static RawMaterialDTORes fromEntity(RawMaterial rawMaterial) {
         return new RawMaterialDTORes(
                 rawMaterial.getId(),

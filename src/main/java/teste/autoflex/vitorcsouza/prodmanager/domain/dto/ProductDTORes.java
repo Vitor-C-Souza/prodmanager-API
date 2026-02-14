@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import teste.autoflex.vitorcsouza.prodmanager.domain.model.Product;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
@@ -22,7 +23,8 @@ public record ProductDTORes(
         @Schema(description = "List of raw materials that compose this product")
         @JsonIgnoreProperties("product")
         List<ProductRawMaterialDTORes> productRawMaterial
-) {
+) implements Serializable {
+    private static final long serialVersionUID = 1L;
     public static ProductDTORes fromEntity(Product product) {
         return new ProductDTORes(
                 product.getId(),

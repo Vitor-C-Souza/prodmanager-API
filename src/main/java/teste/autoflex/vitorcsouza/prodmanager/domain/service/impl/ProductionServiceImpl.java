@@ -1,6 +1,7 @@
 package teste.autoflex.vitorcsouza.prodmanager.domain.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import teste.autoflex.vitorcsouza.prodmanager.domain.dto.ProductDTORes;
@@ -23,6 +24,7 @@ public class ProductionServiceImpl implements ProductionService {
     private final RawMaterialRepository rawMaterialRepository;
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "productionCalculation", key = "#root.methodName")
     public List<ProductionResultDTO> calculateProduction() {
         List<Product> products = new ArrayList<>(productRepository.findAll());
         List<ProductionResultDTO> result = new ArrayList<>();

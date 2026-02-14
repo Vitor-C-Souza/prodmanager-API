@@ -2,6 +2,7 @@ package teste.autoflex.vitorcsouza.prodmanager.domain.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import teste.autoflex.vitorcsouza.prodmanager.domain.dto.ProductRawMaterialDTOReq;
@@ -27,6 +28,7 @@ public class ProductRawMaterialServiceImpl implements ProductRawMaterialService 
 
     @Override
     @Transactional
+    @CacheEvict(value = {"productionCalculation", "productsList"}, allEntries = true)
     public ProductRawMaterialDTORes link(UUID productId, ProductRawMaterialDTOReq productRawMaterialDTOReq) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found"));

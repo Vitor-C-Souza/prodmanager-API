@@ -12,9 +12,8 @@
     <artifactId>prodmanager</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>ProdManager</name>
-    <description>ProdManager Aplicação backend desenvolvida em Spring Boot para gerenciamento de estoque industrial e
-        planejamento de produção, com foco em otimização de recursos, priorização de produtos mais rentáveis e simulação
-        de faturamento.
+    <description>Industrial inventory management and production planning backend application.
+        Focuses on resource optimization, profitability prioritization, and revenue simulation.
     </description>
     <url/>
     <licenses>
@@ -77,12 +76,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
             <groupId>com.oracle.database.jdbc</groupId>
             <artifactId>ojdbc11</artifactId>
             <scope>runtime</scope>
@@ -111,6 +104,14 @@
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.8.9</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
     </dependencies>
 

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import teste.autoflex.vitorcsouza.prodmanager.domain.model.ProductRawMaterial;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @Schema(description = "Response object showing the link between a product and its required raw material")
@@ -18,7 +19,8 @@ public record ProductRawMaterialDTORes(
         RawMaterialDTORes rawMaterial,
         @Schema(description = "Quantity of this specific material needed to produce one unit of the product", example = "1")
         int requiredQuantity
-) {
+) implements Serializable {
+    private static final long serialVersionUID = 1L;
     public ProductRawMaterialDTORes(ProductRawMaterial productRawMaterial) {
         this(
                 productRawMaterial.getId(),

@@ -2,6 +2,8 @@ package teste.autoflex.vitorcsouza.prodmanager.domain.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import teste.autoflex.vitorcsouza.prodmanager.domain.dto.RawMaterialDTOReq;
@@ -21,6 +23,7 @@ public class RawMaterialServiceImpl implements RawMaterialService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"productionCalculation", "rawMaterialsList"}, allEntries = true)
     public RawMaterialDTORes save(RawMaterialDTOReq dto) {
         RawMaterial rawMaterial = dto.toEntity();
         rawMaterialRepository.save(rawMaterial);
@@ -29,6 +32,7 @@ public class RawMaterialServiceImpl implements RawMaterialService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "rawMaterialsList")
     public List<RawMaterialDTORes> findAll() {
 
         List<RawMaterial> rawMaterials = rawMaterialRepository.findAll();
@@ -46,6 +50,7 @@ public class RawMaterialServiceImpl implements RawMaterialService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"productionCalculation", "rawMaterialsList"}, allEntries = true)
     public RawMaterialDTORes update(UUID id, RawMaterialDTOReq dto) {
         RawMaterial rawMaterial = rawMaterialRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Raw material not found"));
 
@@ -58,6 +63,7 @@ public class RawMaterialServiceImpl implements RawMaterialService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"productionCalculation", "rawMaterialsList"}, allEntries = true)
     public void deleteById(UUID id) {
 
         if (rawMaterialRepository.existsById(id)) {
@@ -69,6 +75,7 @@ public class RawMaterialServiceImpl implements RawMaterialService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"productionCalculation", "rawMaterialsList"}, allEntries = true)
     public RawMaterialDTORes updateStock(UUID id, int quantity) {
         RawMaterial rawMaterial = rawMaterialRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Raw Material not found"));

@@ -2,6 +2,7 @@ package teste.autoflex.vitorcsouza.prodmanager.domain.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Schema(description = "Calculated result of production capacity for a specific product")
@@ -13,5 +14,6 @@ public record ProductionResultDTO(
         @Schema(description = "Current unit price of the product", example = "599.90")
         BigDecimal price,
         @Schema(description = "Multiplication factor or total value calculation", example = "25195.80")
-        BigDecimal multiply) {
+        BigDecimal multiply) implements Serializable {
+        private static final long serialVersionUID = 1L;
 }
