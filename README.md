@@ -2,7 +2,7 @@
 
 ![Java](https://img.shields.io/badge/Java-17-orange?style=for-the-badge&logo=java)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.10-green?style=for-the-badge&logo=springboot)
-![Redis](https://img.shields.io/badge/Redis-Latest-red?style=for-the-badge&logo=redis)
+![Redis](https://img.shields.io/badge/Redis-8.4.1-red?style=for-the-badge&logo=redis)
 ![Oracle](https://img.shields.io/badge/Oracle-21c-red?style=for-the-badge&logo=oracle)
 ![Docker](https://img.shields.io/badge/Docker-Latest-blue?style=for-the-badge&logo=docker)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
