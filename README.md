@@ -87,11 +87,11 @@ Before you begin, ensure you have the following installed:
    - API Base: `http://localhost:8080/api/v1`
    - Swagger UI: `http://localhost:8080/swagger-ui.html`
 
-4. **Create your first user:**
+4. **Login with default admin user:**
    ```bash
-   curl -X POST http://localhost:8080/api/v1/auth/register \
+   curl -X POST http://localhost:8080/api/v1/auth/login \
      -H "Content-Type: application/json" \
-     -d '{"email":"user@example.com","password":"securePassword123","role":"ADMIN"}'
+     -d '{"email":"admin@prodmanager.com","password":"Admin123"}'
    ```
 
 ### Running Locally
@@ -130,6 +130,14 @@ Before you begin, ensure you have the following installed:
 ## 🔐 Authentication
 
 ProdManager uses **JWT (JSON Web Token)** for secure API access.
+
+### Default Admin User
+
+The system comes with a pre-configured admin user (created via Flyway migration `V6__Seed_Initial_User.sql`):
+
+| Email | Password | Role |
+|-------|----------|------|
+| **admin@prodmanager.com** | **Admin123** | **ADMIN** |
 
 ### Register a New User
 
