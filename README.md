@@ -1,14 +1,17 @@
 # ProdManager API
 
-![Java](https://img.shields.io/badge/Java-17-orange)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.10-green)
-![License](https://img.shields.io/badge/License-MIT-blue)
+![Java](https://img.shields.io/badge/Java-17-orange?style=for-the-badge&logo=java)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.10-green?style=for-the-badge&logo=springboot)
+![Redis](https://img.shields.io/badge/Redis-Latest-red?style=for-the-badge&logo=redis)
+![Oracle](https://img.shields.io/badge/Oracle-21c-red?style=for-the-badge&logo=oracle)
+![Docker](https://img.shields.io/badge/Docker-Latest-blue?style=for-the-badge&logo=docker)
+![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
 
 A comprehensive **RESTful API** for industrial production management built with **Spring Boot**. This system simulates real-world manufacturing workflows, managing products, raw materials, inventory control, production planning, and financial reporting.
 
 ## Overview
 
-ProdManager is designed with enterprise-grade architecture principles including secure authentication, role-based authorization, complex business rules, automated database migrations, and containerized deployment. It's a perfect reference for building production-ready backend systems.
+ProdManager is designed with enterprise-grade architecture principles including secure authentication, role-based authorization, complex business rules, automated database migrations, caching strategies, and containerized deployment. It's a perfect reference for building production-ready backend systems.
 
 ---
 
@@ -21,6 +24,7 @@ ProdManager is designed with enterprise-grade architecture principles including 
 - 📊 **Stock Control System** - Real-time inventory tracking and management
 - ⚙️ **Production Simulation** - Intelligent algorithm for production planning optimization
 - 💰 **Financial Reporting** - Production cost analysis and revenue calculations
+- ⚡ **High Performance Caching** - Redis integration for optimized data retrieval
 - ✅ **Input Validation** - Comprehensive data validation across all endpoints
 - 🛡️ **Global Exception Handling** - Consistent error responses
 - 🧪 **Comprehensive Testing** - Unit and integration test coverage
@@ -38,6 +42,8 @@ ProdManager is designed with enterprise-grade architecture principles including 
 | **Spring Security** | Latest | Authentication & Authorization |
 | **JWT** | Latest | Token management |
 | **Spring Data JPA** | Latest | ORM & Data access |
+| **Spring Cache** | Latest | Caching abstraction |
+| **Redis** | 8.4.1 | Distributed cache store |
 | **Oracle Database** | XE 21c | Primary database |
 | **Flyway** | Latest | Database migrations |
 | **Docker** | Latest | Containerization |
@@ -57,6 +63,7 @@ Before you begin, ensure you have the following installed:
 - **Java Development Kit (JDK)** version 17 or higher
 - **Maven** version 3.8+
 - **Oracle Database XE** (21c) running locally
+- **Redis** server running locally
 - **Git** for version control
 
 ---
@@ -73,7 +80,7 @@ Before you begin, ensure you have the following installed:
 
 2. **Start all services:**
    ```bash
-   docker-compose up --build
+   docker-compose up -d
    ```
 
 3. **Access the API:**
@@ -98,9 +105,11 @@ Before you begin, ensure you have the following installed:
 2. **Configure environment variables:**
    ```bash
    export SPRING_PROFILES_ACTIVE=dev
-   export SPRING_DATASOURCE_URL=jdbc:oracle:thin:@localhost:1521:XE
-   export SPRING_DATASOURCE_USERNAME=system
-   export SPRING_DATASOURCE_PASSWORD=your_password
+   export SPRING_DATASOURCE_URL=jdbc:oracle:thin:@localhost:1521/XEPDB1
+   export SPRING_DATASOURCE_USERNAME=produser
+   export SPRING_DATASOURCE_PASSWORD=prodpass
+   export SPRING_DATA_REDIS_HOST=localhost
+   export SPRING_DATA_REDIS_PORT=6379
    ```
 
 3. **Build the project:**
@@ -337,6 +346,7 @@ The intelligent **production simulation engine** is the core of ProdManager. It 
 ### Benefits of Docker Deployment
 - ✅ Consistent environment across machines
 - ✅ No local database setup required
+- ✅ Redis cache pre-configured
 - ✅ Easy scaling and deployment
 - ✅ Isolated services
 
@@ -344,6 +354,7 @@ The intelligent **production simulation engine** is the core of ProdManager. It 
 
 The `docker-compose.yml` includes:
 - **Oracle Database XE** (port 1521)
+- **Redis** (port 6379)
 - **ProdManager API** (port 8080)
 - Pre-configured networking
 
@@ -351,12 +362,7 @@ The `docker-compose.yml` includes:
 
 **Start the application:**
 ```bash
-docker-compose up --build
-```
-
-**Start in the background:**
-```bash
-docker-compose up -d --build
+docker-compose up -d
 ```
 
 **View logs:**
@@ -388,9 +394,11 @@ docker-compose down -v
 2. **Set environment variables:**
    ```bash
    export SPRING_PROFILES_ACTIVE=dev
-   export SPRING_DATASOURCE_URL=jdbc:oracle:thin:@localhost:1521:XE
-   export SPRING_DATASOURCE_USERNAME=system
-   export SPRING_DATASOURCE_PASSWORD=oracle
+   export SPRING_DATASOURCE_URL=jdbc:oracle:thin:@localhost:1521/XEPDB1
+   export SPRING_DATASOURCE_USERNAME=produser
+   export SPRING_DATASOURCE_PASSWORD=prodpass
+   export SPRING_DATA_REDIS_HOST=localhost
+   export SPRING_DATA_REDIS_PORT=6379
    ```
 
 3. **Run Maven clean build:**
@@ -595,10 +603,14 @@ Create a `.env` file or set these variables:
 
 ```env
 # Database Configuration
-SPRING_DATASOURCE_URL=jdbc:oracle:thin:@localhost:1521:XE
-SPRING_DATASOURCE_USERNAME=system
-SPRING_DATASOURCE_PASSWORD=oracle
+SPRING_DATASOURCE_URL=jdbc:oracle:thin:@localhost:1521/XEPDB1
+SPRING_DATASOURCE_USERNAME=produser
+SPRING_DATASOURCE_PASSWORD=prodpass
 SPRING_DATASOURCE_DRIVER_CLASS_NAME=oracle.jdbc.driver.OracleDriver
+
+# Redis Configuration
+SPRING_DATA_REDIS_HOST=localhost
+SPRING_DATA_REDIS_PORT=6379
 
 # JPA/Hibernate
 SPRING_JPA_HIBERNATE_DDL_AUTO=validate
